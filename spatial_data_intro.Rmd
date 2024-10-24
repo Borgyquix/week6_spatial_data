@@ -31,28 +31,6 @@ survey_data <-read.csv(here("piru_data","point_coord_20241024.csv")) %>%
   filter(data_type == "transect")
 str(survey_data)
 survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
-
-groups_load <- read.csv("~/Dropbox/GRADSCHOOL/Dissertation/R_dissertation/chaparraldegradation_2022/chaparraldegradation_2022/Extracted_Elevation_Slope_Aspect_Hillshade_20m.csv", header = TRUE, na.strings=c("","NA")) 
-
-groups <- groups_load %>% 
-  dplyr::select(c(system_ind, cluster)) %>% 
-  rename(site_rep = system_ind) %>% 
-  mutate(site_rep = case_when(site_rep == "INT1" ~ "INT1.1", # old name ~ new name
-                              site_rep == "INT2" ~ "INT2.1",
-                              site_rep == "INT3" ~ "INT3.1",
-                              site_rep == "INT4" ~ "INT4.1",
-                              site_rep == "INT5" ~ "INT5.1",
-                                  TRUE ~ site_rep))   %>% 
-  mutate(site_rep = case_when(site_rep == "1.1" ~ "1.10", # old ~ new
-                                 site_rep == "2.1" ~ "2.10",
-                                 site_rep == "2.2" ~ "2.20",
-                                   TRUE ~ site_rep)) %>% 
-   mutate(
-      site_rep = as.character(site_rep)
-      ) %>% 
-  as_tibble() 
-
-groups
 ```
 
 ## Basic graph to visualize data
@@ -65,12 +43,10 @@ groups
 
 # Plot the county map and overlay the survey points
 ggplot() +
-  geom_sf(data = county_map, fill = "lightgray", color = "black") + # Plot the county map
+  geom_sf(data = sb_county, fill = "lightgray", color = "black") + # Plot the county map
   geom_sf(data = survey_sf, color = "blue", size = 3) +             # Plot the survey locations
   theme_minimal() +
   labs(title = "Survey Locations on County Map", x = "Longitude", y = "Latitude")
-
-
 ```
 
 ```{r}
@@ -84,15 +60,12 @@ ggplot() +
   labs(title = "Survey Locations by Group", x = "Longitude", y = "Latitude")
 
 
-
 # Create the interactive map
 leaflet() %>%
-  addTiles() %>%  # Add default OpenStreetMap tiles
-  addPolygons(data = county_map_leaflet, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
-  addCircleMarkers(data = survey_sf, radius = 5, color = "blue", popup = ~paste("Site:", site)) %>%
+  addProviderTiles(providers$OpenTopoMap) %>% 
+  addPolygons(data = sb_county, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+  addCircleMarkers(data = survey_sf, radius = 5, color = "blue", popup = ~paste("Site:", survey_location)) %>%
   setView(lng = mean(st_coordinates(survey_sf)[,1]), lat = mean(st_coordinates(survey_sf)[,2]), zoom = 10)
-
-
 ```
 }
 ```{r}
