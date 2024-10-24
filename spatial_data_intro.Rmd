@@ -13,202 +13,97 @@ library(sf)
 library(raster)
 library(leaflet)
 library(ggplot2)
+```
+
+```{r}
+
+# Ommar, can you please...
+# - download a shapefile for Ventura county and save it in the piru_data folder
+# -  
 
 ```
 
-## Loading in vector data and reprojecting it with sf package
+## Loading in data and reprojecting it with sf package
 
 ```{r}
+
+# upload coordinates 
+survey_data_load <-read.csv(here("piru_data","point_coord_20241024.csv")) %>% 
+  filter(data_type == "transect") %>% 
+  as.tibble()
+
+# upload ventura county shapefile
+# ven_county <- st_read(here("piru_data", ".shp")) %>%
+#   st_transform(crs = 4326)
+
+
+# upload group data
+groups <- read.csv(here("piru_data", "groups.csv")) %>% 
+  dplyr::select(c(system_ind, cluster)) %>% 
+  rename(survey_location = system_ind) %>% 
+  mutate(
+      survey_location = as.character(survey_location), 
+      cluster = as.character(cluster)
+      ) %>% 
+  as_tibble() 
+
+# join survey_data_load and groups
+survey_data <- survey_data_load %>% 
+  left_join(groups, by = "survey_location") %>%
+   mutate(survey_location = case_when(survey_location == "1.1" ~ "1.10", # old ~ new
+                                 survey_location == "2.1" ~ "2.10",
+                                 survey_location == "2.2" ~ "2.20",
+                                   TRUE ~ survey_location)) %>% 
+  rename(group = cluster) 
+  
+
+survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
+
+
 # plots <- st_read(here("data", "sample_plots.shp")) %>% 
 #   st_transform(crs = 4326)
 
-sb_county <- st_read(here("data", "sb_county.shp")) %>% 
-  st_transform(crs = 4326)
+# sb_county <- st_read(here("data", "sb_county.shp")) %>% 
+#   st_transform(crs = 4326)
 
-# trial<-st_read(here("piru_data","point_coord_20241024.csv")) 
-
-survey_data <-read.csv(here("piru_data","point_coord_20241024.csv")) %>% 
-  filter(data_type == "transect")
-str(survey_data)
-survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
 ```
 
-## Basic graph to visualize data
-
-```{r}
-# leaflet() %>% 
-#   addPolygons(data = sb_county) %>% 
-#   addMarkers(data = trial) %>% 
-#   addTiles()
-
-# Plot the county map and overlay the survey points
-ggplot() +
-  geom_sf(data = sb_county, fill = "lightgray", color = "black") + # Plot the county map
-  geom_sf(data = survey_sf, color = "blue", size = 3) +             # Plot the survey locations
-  theme_minimal() +
-  labs(title = "Survey Locations on County Map", x = "Longitude", y = "Latitude")
-```
+## Static map to visualize survey locations
 
 ```{r}
 
 # Static map with ggplot2, color by "group"
 ggplot() +
-  geom_sf(data = county_map, fill = "lightgray", color = "black") +   # County shapefile
-  geom_sf(data = survey_sf, aes(color = group), size = 3) +           # Survey locations, colored by group
-  scale_color_manual(values = c("Group A" = "blue", "Group B" = "red")) + # Customize colors for groups
-  theme_minimal() +
-  labs(title = "Survey Locations by Group", x = "Longitude", y = "Latitude")
+  # geom_sf(data = ventura_county, fill = "lightgray", color = "black") +   # County shapefile
+  geom_sf(data = (survey_sf %>%  filter(str_starts(survey_location, "1"))), aes(color = group), size = 3) +           # Survey locations, colored by group
+  scale_color_manual(values = c("1" = "yellow", 
+                                "2" = "orange", 
+                                "3" = "blue", 
+                                "4" = "purple", 
+                                "5" = "darkgreen")) + # Customize colors for groups
+  theme_bw() +
+  labs(title = "Survey Locations by Group", x = "Longitude", y = "Latitude") +
+  expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
+  scale_y_continuous(breaks = seq(34.47, 34.52, 0.01)) +  # Adjust the interval for the y-axis breaks
+  scale_x_continuous(breaks = seq(-118.7700, -118.7550, 0.001)) # Adjust the interval for the x-axis breaks
+  
+
+```
+
+## Interactive map to visualize survey locations
+
+```{r}
+
+# Create a color palette function based on "group"
+pal <- colorFactor(palette = c("yellow", "cyan", "steelblue", "navy", "darkgreen"), domain = survey_sf$group)
+
+survey_sf_buffer <- st_buffer(survey_sf, dist = 10)
 
 
 # Create the interactive map
 leaflet() %>%
-  addProviderTiles(providers$OpenTopoMap) %>% 
-  addPolygons(data = sb_county, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
-  addCircleMarkers(data = survey_sf, radius = 5, color = "blue", popup = ~paste("Site:", survey_location)) %>%
-  setView(lng = mean(st_coordinates(survey_sf)[,1]), lat = mean(st_coordinates(survey_sf)[,2]), zoom = 10)
+  addProviderTiles(providers$Esri.WorldTopoMap) %>% 
+  #addPolygons(data = survey_sf_buffer, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+  addCircleMarkers(data = (survey_sf %>% filter(str_starts(survey_location, "1"))), radius = 5, color = ~pal(group), popup = ~paste("Site:", survey_location)) %>%
+  setView(lng = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "1")))[,1]), lat = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "1")))[,2]), zoom = 17)
 ```
-}
-```{r}
-# Create a color palette function based on "group"
-pal <- colorFactor(palette = c("blue", "red"), domain = survey_sf$group)
-
-# Interactive map with leaflet, colored by group
-leaflet() %>%
-  addTiles() %>%  # Add default OpenStreetMap tiles
-  addPolygons(data = county_map_leaflet, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
-  addCircleMarkers(data = survey_sf, radius = 5, color = ~pal(group), popup = ~paste("Site:", site)) %>%
-  setView(lng = mean(st_coordinates(survey_sf)[,1]), lat = mean(st_coordinates(survey_sf)[,2]), zoom = 10)
-```
-
-
-
-## How to crop points to be within desired polygon
-
-```{r}
-plots_sb <- st_intersection(plots, sb_county) %>% 
-  dplyr::select(Id, NAME) %>% 
-  mutate(Id = 1:8) %>% 
-  rename("county" = "NAME")
-
-
-leaflet() %>% 
-  addPolygons(data = sb_county) %>% 
-  addMarkers(data = plots_sb) %>% 
-  addTiles()
-
-```
-
-## We can add a buffer around our points to create new polygons
-
-```{r}
-plots_buffer <- st_buffer(plots, dist = 100)
-leaflet() %>% 
-  addPolygons(data = plots_buffer) %>% 
-  addTiles()
-```
-
-## Now you try: 
-- crop our plots_buffer layer to be only in Santa Barbara County
-- make a new buffer layer with plots_sb 
-- these should be identical. Graph them with leaflet and see if they overlap
-
-```{r}
-
-```
-
-
-## Loading in and visualizing raster data
-
-```{r}
-sb_precip_normal <- raster(here("data", "sb_precip_normal.tif"))
-sb_precip_normal
-summary(sb_precip_normal)
-
-plot(sb_precip_normal)
-
-precip_normal_gg <- sb_precip_normal %>% 
-  rasterToPoints() %>% 
-  data.frame()
-
-ggplot() +
-  geom_sf(data = sb_county) +
-  geom_raster(data = precip_normal_gg, aes(x= x, y = y, fill =sb_precip_normal))+
-  geom_sf(data = plots_sb)
-
-precip_normal_summary <- precip_normal_gg %>% 
-  summarize(mean = mean(sb_precip_normal, na.rm = TRUE),
-            median = median(sb_precip_normal, na.rm = TRUE),
-            sd = sd(sb_precip_normal, na.rm = TRUE))
-
-ggplot(precip_normal_gg) +
-  geom_histogram(aes(x = sb_precip_normal))
-
-
-```
-
-## We can also crop raster data 
-
-```{r}
-sb_precip_normal_crop <- sb_precip_normal %>% 
-  crop(plots_buffer) %>% 
-  rasterToPoints() %>% 
-  data.frame()
-
-ggplot() +
-  geom_sf(data = sb_county) +
-  geom_raster(data = sb_precip_normal_crop, aes(x, y, fill = sb_precip_normal))+ 
-  geom_sf(data = plots_buffer)
-```
-
-## We cab also resample raster pixel size, do raster math, and combine raster layers
-
-```{r}
-sb_precip_2003 <- raster(here("data", "sb_precip_2003.tif"))
-
-sb_precip_normal_resample <- resample(x = sb_precip_normal, y = sb_precip_2003)
-
-precip_2003_anomaly <- sb_precip_2003 - sb_precip_normal_resample 
-
-plot(precip_2003_anomaly)
-
-precip_brick <- brick(sb_precip_2003, 
-                      sb_precip_normal_resample, 
-                      precip_2003_anomaly)
-plot(precip_brick)
-
-precip_brick_math <- precip_brick - 1000
-
-plot(precip_brick_math)
-
-```
-
-## Now you try:
- - Load in precip data for 2000 - 20002
- - Make a raster brick of those three layers
- - Caluclate precipitation anomaly for raster brick
- - plot it
- 
-```{r}
-
-```
- 
-
-## Lastly, we can use sf and raster package together to extract raster data to points or polygons
-```{r}
-plots_sb_precip <- plots_sb %>% 
-  mutate(precip_2003 = raster::extract(sb_precip_2003, plots_sb),
-         precip_2003_anomaly = raster::extract(precip_2003_anomaly, plots_sb),
-         precip_normal = raster::extract(sb_precip_normal_resample, plots_sb))
-
-ggplot(plots_sb_precip, aes(x = precip_normal, y = precip_2003_anomaly)) +
-  geom_point()
-```
-
-## Now you try: 
- -Extract 2000-2002 anomalies to plots_sb
- -graph a relationship with ggplot
- 
-```{r}
-
-```
- 
