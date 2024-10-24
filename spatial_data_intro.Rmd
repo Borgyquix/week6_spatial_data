@@ -31,6 +31,28 @@ survey_data <-read.csv(here("piru_data","point_coord_20241024.csv")) %>%
   filter(data_type == "transect")
 str(survey_data)
 survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
+
+groups_load <- read.csv("~/Dropbox/GRADSCHOOL/Dissertation/R_dissertation/chaparraldegradation_2022/chaparraldegradation_2022/Extracted_Elevation_Slope_Aspect_Hillshade_20m.csv", header = TRUE, na.strings=c("","NA")) 
+
+groups <- groups_load %>% 
+  dplyr::select(c(system_ind, cluster)) %>% 
+  rename(site_rep = system_ind) %>% 
+  mutate(site_rep = case_when(site_rep == "INT1" ~ "INT1.1", # old name ~ new name
+                              site_rep == "INT2" ~ "INT2.1",
+                              site_rep == "INT3" ~ "INT3.1",
+                              site_rep == "INT4" ~ "INT4.1",
+                              site_rep == "INT5" ~ "INT5.1",
+                                  TRUE ~ site_rep))   %>% 
+  mutate(site_rep = case_when(site_rep == "1.1" ~ "1.10", # old ~ new
+                                 site_rep == "2.1" ~ "2.10",
+                                 site_rep == "2.2" ~ "2.20",
+                                   TRUE ~ site_rep)) %>% 
+   mutate(
+      site_rep = as.character(site_rep)
+      ) %>% 
+  as_tibble() 
+
+groups
 ```
 
 ## Basic graph to visualize data
@@ -60,6 +82,7 @@ ggplot() +
   scale_color_manual(values = c("Group A" = "blue", "Group B" = "red")) + # Customize colors for groups
   theme_minimal() +
   labs(title = "Survey Locations by Group", x = "Longitude", y = "Latitude")
+
 
 
 # Create the interactive map
