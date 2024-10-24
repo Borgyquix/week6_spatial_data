@@ -13,6 +13,7 @@ library(sf)
 library(raster)
 library(leaflet)
 library(ggplot2)
+library(gridExtra)
 ```
 
 ```{r}
@@ -73,7 +74,7 @@ survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
 ```{r}
 
 # Static map with ggplot2, color by "group"
-ggplot() +
+static1 <- ggplot() +
   # geom_sf(data = ventura_county, fill = "lightgray", color = "black") +   # County shapefile
   geom_sf(data = (survey_sf %>%  filter(str_starts(survey_location, "1"))), aes(color = group), size = 3) +           # Survey locations, colored by group
   scale_color_manual(values = c("1" = "yellow", 
@@ -82,12 +83,46 @@ ggplot() +
                                 "4" = "purple", 
                                 "5" = "darkgreen")) + # Customize colors for groups
   theme_bw() +
-  labs(title = "Survey Locations by Group", x = "Longitude", y = "Latitude") +
-  expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
-  scale_y_continuous(breaks = seq(34.47, 34.52, 0.01)) +  # Adjust the interval for the y-axis breaks
-  scale_x_continuous(breaks = seq(-118.7700, -118.7550, 0.001)) # Adjust the interval for the x-axis breaks
+  labs(title = "Northern Site: transect locations", x = "Longitude", y = "Latitude") #+
+  # expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
+  # scale_y_continuous(breaks = seq(34.47, 34.52, 0.01)) +  # Adjust the interval for the y-axis breaks
+  # scale_x_continuous(breaks = seq(-118.7700, -118.7550, 0.001)) # Adjust the interval for the x-axis breaks
   
+static2 <- ggplot() +
+  # geom_sf(data = ventura_county, fill = "lightgray", color = "black") +   # County shapefile
+  geom_sf(data = (survey_sf %>%  filter(str_starts(survey_location, "2"))), aes(color = group), size = 3) +           # Survey locations, colored by group
+  scale_color_manual(values = c("1" = "yellow", 
+                                "2" = "orange", 
+                                "3" = "blue", 
+                                "4" = "purple", 
+                                "5" = "darkgreen")) + # Customize colors for groups
+  theme_bw() +
+  labs(title = "Southern Site: transect locations", x = "Longitude", y = "Latitude") # +
+  # expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
+  # scale_y_continuous(breaks = seq(34.47, 34.52, 0.01)) +  # Adjust the interval for the y-axis breaks
+  # scale_x_continuous(breaks = seq(-118.7700, -118.7550, 0.001)) # Adjust the interval for the x-axis breaks
+  
+static3 <- ggplot() +
+  # geom_sf(data = ventura_county, fill = "lightgray", color = "black") +   # County shapefile
+  geom_sf(data = (survey_sf %>%  filter(str_starts(survey_location, "INT"))), aes(color = group), size = 3) +           # Survey locations, colored by group
+  scale_color_manual(values = c("1" = "yellow", 
+                                "2" = "orange", 
+                                "3" = "blue", 
+                                "4" = "purple", 
+                                "5" = "darkgreen")) + # Customize colors for groups
+  theme_bw() +
+  labs(title = "Intact Site: transect locations", x = "Longitude", y = "Latitude") # +
+  # expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
+  # scale_y_continuous(breaks = seq(34.47, 34.52, 0.01)) +  # Adjust the interval for the y-axis breaks
+  # scale_x_continuous(breaks = seq(-118.7700, -118.7550, 0.001)) # Adjust the interval for the x-axis breaks
 
+
+
+static1
+static2
+static3
+
+grid.arrange(static1, static2, static3, ncol = 1)
 ```
 
 ## Interactive map to visualize survey locations
