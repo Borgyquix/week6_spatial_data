@@ -1,6 +1,6 @@
 ---
-.title: "introduction to sf and raster"
-author: "Shane Dewees"
+.title: "Introduction"
+author: "Mar Guzman"
 date: "2/7/2022"
 output: html_document
 ---
@@ -12,6 +12,8 @@ library(tidyverse)
 library(sf)
 library(raster)
 library(leaflet)
+library(ggplot2)
+
 ```
 
 ## Loading in vector data and reprojecting it with sf package
@@ -22,6 +24,11 @@ plots <- st_read(here("data", "sample_plots.shp")) %>%
 
 sb_county <- st_read(here("data", "sb_county.shp")) %>% 
   st_transform(crs = 4326)
+trial<-st_read(here("piru_data","point_coord_20241024.csv")) 
+survey_data <-read.csv(here("piru_data","point_coord_20241024.csv")) %>% 
+  filter(data_type == "transect")
+str(survey_data)
+survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
 ```
 
 ## Basic graph to visualize data
@@ -29,7 +36,7 @@ sb_county <- st_read(here("data", "sb_county.shp")) %>%
 ```{r}
 leaflet() %>% 
   addPolygons(data = sb_county) %>% 
-  addMarkers(data = plots) %>% 
+  addMarkers(data = trial) %>% 
   addTiles()
 ```
 
