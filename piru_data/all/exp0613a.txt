@@ -1,0 +1,185 @@
+Export Version 5.90-65535  5.90-65535 Started.
+Using Export Setup: New ESRI Shapefile
+The following files in C:\Users\sdewees\Documents\GNSS Projects\Default will be exported:
+    SITE2_PROPOSEDPOINTS_01JUNE2024_3.cor
+    INT_SITE1_PROPOSEDTRANSECTS_24MAY2024.cor
+    SITE1_PROPOSEDPOINTS_18MAY2024_1.cor
+    SITE1_PROPOSEDTRANSECTS.cor
+    TRANSECTS_MATRIX_1.cor
+
+Reading file SITE2_PROPOSEDPOINTS_01JUNE2024_3.cor
+159 position(s) read.
+A total of 14 feature(s) read or created.
+  14 point feature(s) read.
+File SITE2_PROPOSEDPOINTS_01JUNE2024_3.cor read successfully
+
+Reading file INT_SITE1_PROPOSEDTRANSECTS_24MAY2024.cor
+38 position(s) read.
+A total of 23 feature(s) read or created.
+  23 point feature(s) read.
+File INT_SITE1_PROPOSEDTRANSECTS_24MAY2024.cor read successfully
+
+Reading file SITE1_PROPOSEDPOINTS_18MAY2024_1.cor
+121 position(s) read.
+A total of 14 feature(s) read or created.
+  14 point feature(s) read.
+File SITE1_PROPOSEDPOINTS_18MAY2024_1.cor read successfully
+
+Reading file SITE1_PROPOSEDTRANSECTS.cor
+150 position(s) read.
+A total of 21 feature(s) read or created.
+  Of these, 2  feature(s) have no positions.
+  21 point feature(s) read.
+File SITE1_PROPOSEDTRANSECTS.cor read successfully
+
+Reading file TRANSECTS_MATRIX_1.cor
+527 position(s) read.
+A total of 23 feature(s) read or created.
+  23 point feature(s) read.
+File TRANSECTS_MATRIX_1.cor read successfully
+No attributes exported for feature 'Point_1'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_2'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_3'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_4'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_5'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_6'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Start here'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Untitled Placemark'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Untitled Placemark3'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Untitled Placemark4'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_7'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_8'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_9'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_10'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_11'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_12'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_13'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_14'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_15'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_16'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_17'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_18'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_19'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_20'.  ArcView may not be able to open exported files with no attributes.
+No attributes exported for feature 'Point_21'.  ArcView may not be able to open exported files with no attributes.
+
+5 input file(s) read.
+995 position(s) read.
+A total of 95 feature(s) read or created.
+  Of these, 2  feature(s) have no positions.
+  95 point feature(s) read.
+2 feature(s) discarded because they have no positions.
+93 feature(s) exported.
+108 output file(s) written to C:\Users\sdewees\Desktop\stephanie_gps\all
+    c:\users\sdewees\desktop\stephanie_gps\all\point.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_1.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_1.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_1.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_1.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_2.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_2.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_2.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_2.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_3.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_3.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_3.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_3.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_4.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_4.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_4.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_4.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_5.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_5.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_5.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_5.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_6.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_6.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_6.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_6.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\start here.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\start here.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\start here.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\start here.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark3.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark3.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark3.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark3.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark4.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark4.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark4.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\untitled placemark4.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_generic.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_generic.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_generic.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_generic.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_7.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_7.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_7.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_7.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_8.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_8.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_8.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_8.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_9.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_9.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_9.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_9.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_10.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_10.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_10.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_10.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_11.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_11.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_11.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_11.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_12.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_12.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_12.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_12.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_13.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_13.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_13.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_13.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_14.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_14.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_14.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_14.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_15.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_15.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_15.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_15.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_16.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_16.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_16.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_16.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_17.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_17.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_17.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_17.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_18.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_18.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_18.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_18.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_19.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_19.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_19.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_19.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_20.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_20.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_20.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_20.prj
+    c:\users\sdewees\desktop\stephanie_gps\all\point_21.shp
+    c:\users\sdewees\desktop\stephanie_gps\all\point_21.shx
+    c:\users\sdewees\desktop\stephanie_gps\all\point_21.dbf
+    c:\users\sdewees\desktop\stephanie_gps\all\point_21.prj
+
+The file C:\Users\sdewees\Desktop\stephanie_gps\all\SITE2_PROPOSEDPOINTS_01JUNE2024_3.log contains information on the settings used.
+
+The file C:\ProgramData\Trimble\GPS Pathfinder Office\Config\\expfiles.txt contains a list of the files created.
