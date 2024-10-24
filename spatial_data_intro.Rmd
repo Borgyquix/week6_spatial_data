@@ -19,12 +19,14 @@ library(ggplot2)
 ## Loading in vector data and reprojecting it with sf package
 
 ```{r}
-plots <- st_read(here("data", "sample_plots.shp")) %>% 
-  st_transform(crs = 4326)
+# plots <- st_read(here("data", "sample_plots.shp")) %>% 
+#   st_transform(crs = 4326)
 
 sb_county <- st_read(here("data", "sb_county.shp")) %>% 
   st_transform(crs = 4326)
-trial<-st_read(here("piru_data","point_coord_20241024.csv")) 
+
+# trial<-st_read(here("piru_data","point_coord_20241024.csv")) 
+
 survey_data <-read.csv(here("piru_data","point_coord_20241024.csv")) %>% 
   filter(data_type == "transect")
 str(survey_data)
@@ -34,11 +36,55 @@ survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
 ## Basic graph to visualize data
 
 ```{r}
-leaflet() %>% 
-  addPolygons(data = sb_county) %>% 
-  addMarkers(data = trial) %>% 
-  addTiles()
+# leaflet() %>% 
+#   addPolygons(data = sb_county) %>% 
+#   addMarkers(data = trial) %>% 
+#   addTiles()
+
+# Plot the county map and overlay the survey points
+ggplot() +
+  geom_sf(data = county_map, fill = "lightgray", color = "black") + # Plot the county map
+  geom_sf(data = survey_sf, color = "blue", size = 3) +             # Plot the survey locations
+  theme_minimal() +
+  labs(title = "Survey Locations on County Map", x = "Longitude", y = "Latitude")
+
+
 ```
+
+```{r}
+
+# Static map with ggplot2, color by "group"
+ggplot() +
+  geom_sf(data = county_map, fill = "lightgray", color = "black") +   # County shapefile
+  geom_sf(data = survey_sf, aes(color = group), size = 3) +           # Survey locations, colored by group
+  scale_color_manual(values = c("Group A" = "blue", "Group B" = "red")) + # Customize colors for groups
+  theme_minimal() +
+  labs(title = "Survey Locations by Group", x = "Longitude", y = "Latitude")
+
+
+# Create the interactive map
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap tiles
+  addPolygons(data = county_map_leaflet, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+  addCircleMarkers(data = survey_sf, radius = 5, color = "blue", popup = ~paste("Site:", site)) %>%
+  setView(lng = mean(st_coordinates(survey_sf)[,1]), lat = mean(st_coordinates(survey_sf)[,2]), zoom = 10)
+
+
+```
+}
+```{r}
+# Create a color palette function based on "group"
+pal <- colorFactor(palette = c("blue", "red"), domain = survey_sf$group)
+
+# Interactive map with leaflet, colored by group
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap tiles
+  addPolygons(data = county_map_leaflet, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+  addCircleMarkers(data = survey_sf, radius = 5, color = ~pal(group), popup = ~paste("Site:", site)) %>%
+  setView(lng = mean(st_coordinates(survey_sf)[,1]), lat = mean(st_coordinates(survey_sf)[,2]), zoom = 10)
+```
+
+
 
 ## How to crop points to be within desired polygon
 
