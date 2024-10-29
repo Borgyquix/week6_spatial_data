@@ -72,16 +72,22 @@ survey_sf <- st_as_sf(survey_data, coords = c("long","lat"),crs = 4326)
 ## Static map to visualize survey locations
 
 ```{r}
+survey_sf <- survey_sf %>%
+  mutate(group = factor(group, levels = c("1", "3", "2", "4", "5"),
+                        labels = c("NNG", "ssG", "ssF", "ssFG", "EVG")))
+
 
 # Static map with ggplot2, color by "group"
 static1 <- ggplot() +
   # geom_sf(data = ventura_county, fill = "lightgray", color = "black") +   # County shapefile
-  geom_sf(data = (survey_sf %>%  filter(str_starts(survey_location, "1"))), aes(color = group), size = 3) +           # Survey locations, colored by group
-  scale_color_manual(values = c("1" = "yellow", 
-                                "2" = "orange", 
-                                "3" = "blue", 
-                                "4" = "purple", 
-                                "5" = "darkgreen")) + # Customize colors for groups
+  geom_sf(data = (survey_sf %>%  
+                    filter(str_starts(survey_location, "1"))
+                  ), aes(color = group), size = 3) +           # Survey locations, colored by group
+  scale_color_manual(values = c("NNG" = "yellow", 
+                                "ssG" = "orange", 
+                                "ssF" = "blue", 
+                                "ssFG" = "purple", 
+                                "EVG" = "darkgreen")) + # Customize colors for groups
   theme_bw() +
   labs(title = "Northern Site: transect locations", x = "Longitude", y = "Latitude") #+
   # expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
@@ -91,11 +97,11 @@ static1 <- ggplot() +
 static2 <- ggplot() +
   # geom_sf(data = ventura_county, fill = "lightgray", color = "black") +   # County shapefile
   geom_sf(data = (survey_sf %>%  filter(str_starts(survey_location, "2"))), aes(color = group), size = 3) +           # Survey locations, colored by group
-  scale_color_manual(values = c("1" = "yellow", 
-                                "2" = "orange", 
-                                "3" = "blue", 
-                                "4" = "purple", 
-                                "5" = "darkgreen")) + # Customize colors for groups
+  scale_color_manual(values = c("NNG" = "yellow", 
+                                "ssG" = "orange", 
+                                "ssF" = "blue", 
+                                "ssFG" = "purple", 
+                                "EVG" = "darkgreen")) + # Customize colors for groups
   theme_bw() +
   labs(title = "Southern Site: transect locations", x = "Longitude", y = "Latitude") # +
   # expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
@@ -105,11 +111,11 @@ static2 <- ggplot() +
 static3 <- ggplot() +
   # geom_sf(data = ventura_county, fill = "lightgray", color = "black") +   # County shapefile
   geom_sf(data = (survey_sf %>%  filter(str_starts(survey_location, "INT"))), aes(color = group), size = 3) +           # Survey locations, colored by group
-  scale_color_manual(values = c("1" = "yellow", 
-                                "2" = "orange", 
-                                "3" = "blue", 
-                                "4" = "purple", 
-                                "5" = "darkgreen")) + # Customize colors for groups
+  scale_color_manual(values = c("NNG" = "yellow", 
+                                "ssG" = "orange", 
+                                "ssF" = "blue", 
+                                "ssFG" = "purple", 
+                                "EVG" = "darkgreen")) + # Customize colors for groups
   theme_bw() +
   labs(title = "Intact Site: transect locations", x = "Longitude", y = "Latitude") # +
   # expand_limits(x = c(-118.7700, -118.7550)) +  # Make sure the x-axis range includes your data points
@@ -130,15 +136,59 @@ grid.arrange(static1, static2, static3, ncol = 1)
 ```{r}
 
 # Create a color palette function based on "group"
-pal <- colorFactor(palette = c("yellow", "cyan", "steelblue", "navy", "darkgreen"), domain = survey_sf$group)
+pal <- colorFactor(palette = c("yellow", "orange", "blue", "purple", "green"), domain = survey_sf$group)
 
 survey_sf_buffer <- st_buffer(survey_sf, dist = 10)
 
 
 # Create the interactive map
-leaflet() %>%
-  addProviderTiles(providers$Esri.WorldTopoMap) %>% 
-  #addPolygons(data = survey_sf_buffer, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+interact_1 <- leaflet() %>%
+  
+  #### adding terrain maps to the background
+  # addProviderTiles(providers$Esri.WorldTopoMap) %>% 
+   addProviderTiles(providers$Esri.WorldImagery) %>%  # Esri Imagery: High-resolution satellite imagery
+  # addProviderTiles(providers$CartoDB.Positron) %>%  # light, minimalist map style suitable for data overlay
+  # addProviderTiles(providers$Stamen.Terrain) %>% # A shaded terrain map, suitable for natural landscapes
+  # addProviderTiles(providers$Stamen.Toner) %>%  # A high-contrast, black-and-white style that highlights features
+  #addPolygons(data = survey_sf_buffer, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundariesv
+  
   addCircleMarkers(data = (survey_sf %>% filter(str_starts(survey_location, "1"))), radius = 5, color = ~pal(group), popup = ~paste("Site:", survey_location)) %>%
   setView(lng = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "1")))[,1]), lat = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "1")))[,2]), zoom = 17)
+
+
+
+interact_2 <- leaflet() %>%
+   addProviderTiles(providers$Esri.WorldImagery) %>%  # Esri Imagery: High-resolution satellite imagery
+  #addPolygons(data = survey_sf_buffer, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+  addCircleMarkers(data = (survey_sf %>% filter(str_starts(survey_location, "2"))), radius = 5, color = ~pal(group), popup = ~paste("Site:", survey_location)) %>%
+  setView(lng = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "2")))[,1]), lat = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "2")))[,2]), zoom = 17)
+
+
+
+interact_3 <- leaflet() %>%
+ addProviderTiles(providers$Esri.WorldImagery) %>%  # Esri Imagery: High-resolution satellite imagery
+  #addPolygons(data = survey_sf_buffer, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+  addCircleMarkers(data = (survey_sf %>% filter(str_starts(survey_location, "INT"))), radius = 5, color = ~pal(group), popup = ~paste("Site:", survey_location)) %>%
+  setView(lng = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "INT")))[,1]), lat = mean(st_coordinates(survey_sf %>%  filter(str_starts(survey_location, "INT")))[,2]), zoom = 17)
+
+
+
+interact_all <- leaflet() %>%
+ addProviderTiles(providers$Esri.WorldImagery) %>%  # Esri Imagery: High-resolution satellite imagery
+  #addPolygons(data = survey_sf_buffer, color = "black", weight = 1, fillColor = "lightgray") %>% # Add county boundaries
+  addCircleMarkers(data = survey_sf, 
+                   radius = 5, 
+                   color = ~pal(group), 
+                   popup = ~paste("Site:", survey_location)) %>%
+  setView(lng = mean(st_coordinates(survey_sf)[,1]), 
+          lat = mean(st_coordinates(survey_sf)[,2]), 
+          zoom = 17)
+
+
+
+interact_1
+interact_2
+interact_3
+
+interact_all
 ```
